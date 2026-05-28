@@ -1,0 +1,65 @@
+
+
+services:
+  app:
+    build: .
+
+      # Map your local port 3000 to the container's port 3000
+    ports:
+      - "3000:3000"
+      - "5555:5555"
+
+      # Map your local code into the container so nodemon sees changes
+    volumes:
+      - .:/app
+      
+      # Prevent your local (empty or incompatible) node_modules from overwriting the container's
+      - /app/node_modules
+
+      # Override the default "npm start" command to use our nodemon script
+    command: npm run dev
+
+      # 1. Tell the app to wait for the database to start first
+    depends_on:
+      - db
+
+      # 2. Pass the connection string into your Express app
+    environment:
+        - DATABASE_URL=postgres://jijo:jijopassword@db:5432/jijoappdb
+
+  #frontend:
+    #build:
+    #  context: ./frontend
+   # ports:
+    #  - "5173:5173"      # Vite dev server
+    #volumes:
+     # - ./frontend:/app
+     # - /app/node_modules
+   # depends_on:
+    #  - app
+    #environment:
+      # if you want to override API URL, set it here
+     # - VITE_API_BASE_URL=http://localhost:3000/api
+
+  db:
+    image: postgres:15-alpine
+
+      # 3. Expose the default Postgres port so you can inspect it from your laptop
+    #ports:
+      #- "5433:5432"
+
+      # 4. Set environment variables to initialize the database with a user and password
+      #set the database credentials 
+    environment:
+      POSTGRES_USER: jijo
+      POSTGRES_PASSWORD: jijopassword
+      POSTGRES_DB: jijoappdb   
+
+      # 5. Save the database data so it isn't deleted when the container stops 
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+  # Declare the named volume for the database
+volumes:
+  pgdata:
