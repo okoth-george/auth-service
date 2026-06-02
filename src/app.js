@@ -12,7 +12,7 @@ const app = express();
 
 //origin: 'http
 app.use(cors({
-  origin: 'http://localhost:5173', // Your Frontend URL
+  origin: ['http://localhost:5173', 'http://172.25.0.1:5173'], // Frontend URLs
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true // Crucial for those Cookies/JWTs we set up!
 }));
@@ -28,7 +28,7 @@ app.use(helmet());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 2, // Limit each IP to 2 requests per windowMs
+  max: 20, // Limit each IP to 2 requests per windowMs
   message: "Too many login attempts, please try again in 15 minutes"
 });
 app.use('/api/users/login',limiter);
