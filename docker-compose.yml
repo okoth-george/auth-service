@@ -1,11 +1,12 @@
 services:
-  app:
-    build: .
+  server:
+    build: 
+      context: ./server
     ports:
       - "3000:3000"
       - "5555:5555"
     volumes:
-      - .:/app
+      - ./server:/app
       - /app/node_modules
     command: npm run dev
     depends_on:
@@ -26,7 +27,7 @@ services:
       # Prevents your local host node_modules from overwriting the container's layout
       - /app/node_modules
     depends_on:
-      - app
+      - server
     environment:
       # 🔌 Directs your React browser app to communicate with your Express API container port
       - VITE_API_URL=http://localhost:3000/api
