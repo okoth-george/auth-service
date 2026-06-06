@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
+import PasswordInput from '../components/PasswordInput';
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -90,7 +91,7 @@ const ResetPassword = () => {
 
               <div className="rp-field">
                 <label htmlFor="new-password-input" className="rp-label">New Password</label>
-                <input
+                <PasswordInput
                   id="new-password-input"
                   className="rp-input"
                   type="password"
@@ -104,7 +105,7 @@ const ResetPassword = () => {
 
               <div className="rp-field">
                 <label htmlFor="confirm-password-input" className="rp-label">Confirm Password</label>
-                <input
+                <PasswordInput
                   id="confirm-password-input"
                   className="rp-input"
                   type="password"
