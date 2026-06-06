@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form'; // Added Controller
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../schemas/authSchema';
 import api from '../api/axios';
@@ -14,6 +14,7 @@ const Login = () => {
 
   const {
     register,
+    control, // Grab control for Controller integration
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm({
@@ -70,7 +71,6 @@ const Login = () => {
           --error-border:   rgba(255,107,107,0.2);
         }
 
-        /* ── ROOT SHELL ─────────────────────────────────────────── */
         .rp-root {
           display: flex;
           min-height: 100vh;
@@ -81,12 +81,8 @@ const Login = () => {
           -webkit-font-smoothing: antialiased;
         }
 
-        /* ── LEFT ZONE — hidden on mobile/tablet ────────────────── */
-        .rp-left {
-          display: none;
-        }
+        .rp-left { display: none; }
 
-        /* ── RIGHT ZONE — full width on mobile ──────────────────── */
         .rp-right {
           flex: 1;
           display: flex;
@@ -99,7 +95,6 @@ const Login = () => {
           background-image: radial-gradient(ellipse at top right, rgba(200,240,100,0.07) 0%, transparent 60%);
         }
 
-        /* ── CARD ───────────────────────────────────────────────── */
         .rp-card {
           width: 100%;
           max-width: 440px;
@@ -110,45 +105,12 @@ const Login = () => {
           box-shadow: 0 8px 40px rgba(0,0,0,0.5);
         }
 
-        .rp-card-brand {
-          font-size: 26px;
-          color: var(--accent);
-          margin-bottom: 1.25rem;
-          font-family: 'Syne', sans-serif;
-          line-height: 1;
-        }
+        .rp-card-brand { font-size: 26px; color: var(--accent); margin-bottom: 1.25rem; font-family: 'Syne', sans-serif; line-height: 1; }
+        .rp-heading { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.3px; color: var(--primary-text); margin-bottom: 0.25rem; }
+        .rp-subheading { font-size: 14px; color: var(--secondary-text); margin-bottom: 1.75rem; line-height: 1.5; }
 
-        .rp-heading {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
-          font-size: 22px;
-          letter-spacing: -0.3px;
-          color: var(--primary-text);
-          margin-bottom: 0.25rem;
-        }
-
-        .rp-subheading {
-          font-size: 14px;
-          color: var(--secondary-text);
-          margin-bottom: 1.75rem;
-          line-height: 1.5;
-        }
-
-        /* ── FORM ───────────────────────────────────────────────── */
-        .rp-field {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          margin-bottom: 1.2rem;
-        }
-
-        .rp-label {
-          font-size: 11px;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: var(--secondary-text);
-          font-weight: 500;
-        }
+        .rp-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.2rem; }
+        .rp-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--secondary-text); font-weight: 500; }
 
         .rp-input {
           width: 100%;
@@ -171,48 +133,12 @@ const Login = () => {
           box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
-        /* ── ERROR ──────────────────────────────────────────────── */
-        .rp-error {
-          background: var(--error-bg);
-          border: 1px solid var(--error-border);
-          border-radius: 12px;
-          padding: 10px 14px;
-          color: var(--error);
-          font-size: 13px;
-          margin-bottom: 1.2rem;
-        }
+        .rp-error { background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 12px; padding: 10px 14px; color: var(--error); font-size: 13px; margin-bottom: 1.2rem; }
+        .rp-error-title { display: block; font-weight: 600; margin-bottom: 4px; }
+        .rp-error-list { padding-left: 1.1rem; display: flex; flex-direction: column; gap: 2px; }
+        .rp-status { margin-bottom: 1.2rem; padding: 10px 14px; border-radius: 12px; background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error); font-size: 13px; }
 
-        .rp-error-title {
-          display: block;
-          font-weight: 600;
-          margin-bottom: 4px;
-        }
-
-        .rp-error-list {
-          padding-left: 1.1rem;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-        }
-
-        .rp-status {
-          margin-bottom: 1.2rem;
-          padding: 10px 14px;
-          border-radius: 12px;
-          background: var(--error-bg);
-          border: 1px solid var(--error-border);
-          color: var(--error);
-          font-size: 13px;
-        }
-
-        /* ── META ROW ───────────────────────────────────────────── */
-        .rp-meta {
-          display: flex;
-          justify-content: flex-end;
-          margin: -0.5rem 0 1.2rem;
-        }
-
-        /* ── BUTTON ─────────────────────────────────────────────── */
+        .rp-meta { display: flex; justify-content: flex-end; margin: -0.5rem 0 1.2rem; }
         .rp-actions { width: 100%; margin-bottom: 1.5rem; }
 
         .rp-button {
@@ -233,23 +159,10 @@ const Login = () => {
           transition: background 180ms ease-out, transform 120ms ease, box-shadow 180ms ease-out;
         }
 
-        .rp-button:hover:not([disabled]) {
-          background: var(--accent-dark);
-          box-shadow: 0 4px 20px rgba(200,240,100,0.18);
-        }
-
+        .rp-button:hover:not([disabled]) { background: var(--accent-dark); box-shadow: 0 4px 20px rgba(200,240,100,0.18); }
         .rp-button:active:not([disabled]) { transform: scale(0.99); }
-
-        .rp-button:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
-        .rp-button[disabled] {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
+        .rp-button:focus { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+        .rp-button[disabled] { opacity: 0.6; cursor: not-allowed; }
         .rp-button-text { line-height: 1; }
 
         .rp-spinner {
@@ -268,55 +181,19 @@ const Login = () => {
 
         @keyframes rp-spin { to { transform: rotate(360deg); } }
 
-        /* ── FOOTER ─────────────────────────────────────────────── */
-        .rp-footer-links {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
-        }
-
-        .rp-back {
-          color: var(--secondary-text);
-          font-size: 13px;
-          text-align: center;
-        }
-
-        .rp-link {
-          color: var(--accent);
-          text-decoration: none;
-          font-size: 13px;
-          transition: opacity 150ms;
-        }
-
+        .rp-footer-links { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+        .rp-back { color: var(--secondary-text); font-size: 13px; text-align: center; }
+        .rp-link { color: var(--accent); text-decoration: none; font-size: 13px; transition: opacity 150ms; }
         .rp-link:hover { opacity: 0.7; }
-        .rp-link:focus {
-          outline: none;
-          box-shadow: 0 0 0 2px var(--accent-glow);
-          border-radius: 3px;
-        }
+        .rp-link:focus { outline: none; box-shadow: 0 0 0 2px var(--accent-glow); border-radius: 3px; }
 
-        /* ══════════════════════════════════════════════════════════
-           TABLET  768px+
-        ══════════════════════════════════════════════════════════ */
         @media (min-width: 768px) {
-          .rp-card {
-            padding: 2.5rem;
-          }
+          .rp-card { padding: 2.5rem; }
           .rp-heading { font-size: 26px; }
         }
 
-        /* ══════════════════════════════════════════════════════════
-           DESKTOP  1200px+  — TWO ZONE SPLIT
-        ══════════════════════════════════════════════════════════ */
         @media (min-width: 1200px) {
-
-          .rp-root {
-            align-items: stretch;
-            overflow: hidden;
-          }
-
-          /* left zone fills 45% */
+          .rp-root { align-items: stretch; overflow: hidden; }
           .rp-left {
             display: flex;
             flex: 0 0 45%;
@@ -325,8 +202,6 @@ const Login = () => {
             overflow: hidden;
             background: linear-gradient(155deg, #0a0a0f 0%, #0d0d14 60%, #0f0f18 100%);
           }
-
-          /* glow orb top-right of left zone */
           .rp-left::after {
             content: '';
             position: absolute;
@@ -338,8 +213,6 @@ const Login = () => {
             background: radial-gradient(circle, rgba(200,240,100,0.08) 0%, transparent 65%);
             pointer-events: none;
           }
-
-          /* noise texture */
           .rp-left::before {
             content: '';
             position: absolute;
@@ -347,106 +220,25 @@ const Login = () => {
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
             pointer-events: none;
           }
-
-          .rp-left-inner {
-            position: relative;
-            z-index: 1;
-            padding: 4rem;
-            max-width: 480px;
-          }
-
-          .rp-left-brand {
-            font-size: 30px;
-            color: var(--accent);
-            font-family: 'Syne', sans-serif;
-            margin-bottom: 2.5rem;
-            line-height: 1;
-          }
-
-          .rp-left-heading {
-            font-family: 'Syne', sans-serif;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--primary-text);
-            line-height: 1.15;
-            margin-bottom: 1rem;
-          }
-
-          .rp-left-sub {
-            font-size: 15px;
-            color: var(--secondary-text);
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-            max-width: 320px;
-          }
-
-          .rp-trust {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-          }
-
-          .rp-trust-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            color: var(--secondary-text);
-          }
-
-          .rp-trust-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            flex-shrink: 0;
-            box-shadow: 0 0 6px rgba(200,240,100,0.6);
-          }
-
-          /* vertical divider */
-          .rp-divider {
-            display: block;
-            width: 1px;
-            align-self: stretch;
-            background: rgba(255,255,255,0.05);
-            flex-shrink: 0;
-          }
-
-          /* right zone fills 55% */
-          .rp-right {
-            flex: 0 0 55%;
-            min-height: 100vh;
-            background-color: #111118;
-            background-image: none;
-            padding: 3rem 2rem;
-          }
-
-          /* card floats transparently on right zone */
-          .rp-card {
-            max-width: 500px;
-            background: transparent;
-            border-color: transparent;
-            box-shadow: none;
-            padding: 2.5rem 2rem;
-          }
-
-          /* brand mark in card is redundant on desktop */
+          .rp-left-inner { position: relative; z-index: 1; padding: 4rem; max-width: 480px; }
+          .rp-left-brand { font-size: 30px; color: var(--accent); font-family: 'Syne', sans-serif; margin-bottom: 2.5rem; line-height: 1; }
+          .rp-left-heading { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; color: var(--primary-text); line-height: 1.15; margin-bottom: 1rem; }
+          .rp-left-sub { font-size: 15px; color: var(--secondary-text); line-height: 1.7; margin-bottom: 2.5rem; max-width: 320px; }
+          .rp-trust { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+          .rp-trust-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--secondary-text); }
+          .rp-trust-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; box-shadow: 0 0 6px rgba(200,240,100,0.6); }
+          .rp-divider { display: block; width: 1px; align-self: stretch; background: rgba(255,255,255,0.05); flex-shrink: 0; }
+          .rp-right { flex: 0 0 55%; min-height: 100vh; background-color: #111118; background-image: none; padding: 3rem 2rem; }
+          .rp-card { max-width: 500px; background: transparent; border-color: transparent; box-shadow: none; padding: 2.5rem 2rem; }
           .rp-card-brand { display: none; }
-
           .rp-heading   { font-size: 28px; }
         }
 
-        /* ══════════════════════════════════════════════════════════
-           WIDE  1920px+
-        ══════════════════════════════════════════════════════════ */
         @media (min-width: 1920px) {
           .rp-root {
             max-width: 1400px;
             margin: 0 auto;
-            box-shadow: -100vw 0 0 100vw var(--bg-canvas),
-                         100vw 0 0 100vw var(--bg-canvas);
+            box-shadow: -100vw 0 0 100vw var(--bg-canvas), 100vw 0 0 100vw var(--bg-canvas);
           }
           .rp-left-heading { font-size: 36px; }
           .rp-heading       { font-size: 30px; }
@@ -456,15 +248,12 @@ const Login = () => {
       `}</style>
 
       <div className="rp-root">
-
-        {/* LEFT ZONE — desktop only */}
         <div className="rp-left" aria-hidden="true">
           <div className="rp-left-inner">
             <div className="rp-left-brand">⬡</div>
             <h2 className="rp-left-heading">One login.<br />Every app.</h2>
             <p className="rp-left-sub">
-              A single auth layer that works across all your projects —
-              build once, ship everywhere.
+              A single auth layer that works across all your projects — build once, ship everywhere.
             </p>
             <ul className="rp-trust">
               <li className="rp-trust-item"><span className="rp-trust-dot" />Secure JWT authentication</li>
@@ -474,19 +263,15 @@ const Login = () => {
           </div>
         </div>
 
-        {/* DIVIDER — desktop only */}
         <div className="rp-divider" aria-hidden="true" />
 
-        {/* RIGHT ZONE */}
         <div className="rp-right">
           <div className="rp-card" role="region" aria-labelledby="rp-heading">
-
             <div className="rp-card-brand" aria-hidden="true">⬡</div>
             <h1 id="rp-heading" className="rp-heading">Welcome back</h1>
             <p className="rp-subheading">Sign in to continue to your app</p>
 
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
               <div className="rp-field">
                 <label htmlFor="login-username" className="rp-label">Username</label>
                 <input
@@ -499,16 +284,22 @@ const Login = () => {
                 />
               </div>
 
+              {/* Fixed via Controller wrapper */}
               <div className="rp-field">
                 <label htmlFor="login-password" className="rp-label">Password</label>
-                <PasswordInput
-                  id="login-password"
-                  className="rp-input"
-                  type="password"
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  {...register('password')}
-                  aria-invalid={errors.password ? 'true' : 'false'}
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <PasswordInput
+                      id="login-password"
+                      placeholder="••••••••"
+                      autoComplete="current-password"
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      aria-invalid={errors.password ? 'true' : 'false'}
+                    />
+                  )}
                 />
               </div>
 
@@ -541,7 +332,6 @@ const Login = () => {
                   <span className="rp-spinner" aria-hidden="true" />
                 </button>
               </div>
-
             </form>
 
             <div className="rp-footer-links">
@@ -550,10 +340,8 @@ const Login = () => {
                 <Link to="/register" className="rp-link">Create one</Link>
               </p>
             </div>
-
           </div>
         </div>
-
       </div>
     </>
   );
