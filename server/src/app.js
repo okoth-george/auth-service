@@ -10,11 +10,16 @@ const cors = require('cors');
 
 const app = express();
 
+
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+];
 //origin: 'http
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://172.25.0.1:5173'], // Frontend URLs
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true // Crucial for those Cookies/JWTs we set up!
+  origin: allowedOrigins,
+  credentials: true
 }));
 
 // Middleware
