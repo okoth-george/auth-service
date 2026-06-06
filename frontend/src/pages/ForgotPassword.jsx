@@ -90,7 +90,11 @@ const ForgotPassword = () => {
                 <span className="rp-token-title">Reset Token</span>
                 <pre className="rp-pre">{token}</pre>
                 <p className="rp-note">
-                  Use this token on the <Link to={`/reset-password?token=${encodeURIComponent(token)}`} className="rp-link">Reset Password</Link> page.
+                  Use this token on the{' '}
+                  <Link to={`/reset-password?token=${encodeURIComponent(token)}`} className="rp-link">
+                    Reset Password
+                  </Link>{' '}
+                  page.
                 </p>
               </div>
             )}
@@ -129,9 +133,11 @@ const ForgotPassword = () => {
           --error-border:   rgba(255,107,107,0.2);
         }
 
+        /* ─── Layout ─── */
         .rp-root {
           display: flex;
           min-height: 100vh;
+          min-height: 100dvh;          /* mobile: respects keyboard/address bar */
           width: 100%;
           background-color: var(--bg-canvas);
           color: var(--primary-text);
@@ -139,34 +145,39 @@ const ForgotPassword = () => {
           -webkit-font-smoothing: antialiased;
         }
 
-        .rp-left { display: none; }
-        .rp-divider { display: none; }
+        .rp-left   { display: none; }
+        .rp-divider{ display: none; }
 
+        /* ─── Right panel (mobile-first) ─── */
         .rp-right {
           flex: 1;
           display: flex;
-          align-items: center;
+          align-items: flex-start;       /* top-align on small screens */
           justify-content: center;
           min-height: 100vh;
-          padding: 2rem 1.25rem;
+          min-height: 100dvh;
+          padding: 1.25rem 1rem;         /* tight side padding on mobile */
           background-color: var(--bg-canvas);
           background-image: radial-gradient(ellipse at top right, rgba(200,240,100,0.07) 0%, transparent 60%);
         }
 
+        /* ─── Card ─── */
         .rp-card {
           width: 100%;
           max-width: 440px;
           background: var(--card-bg);
-          border-radius: 20px;
-          padding: 2rem 1.5rem;
+          border-radius: 16px;           /* slightly tighter on mobile */
+          padding: 1.5rem 1.25rem;       /* reduced from 2rem 1.5rem */
           border: 1px solid var(--border);
           box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+          margin-top: auto;
+          margin-bottom: auto;
         }
 
         .rp-card-brand {
-          font-size: 26px;
+          font-size: clamp(20px, 5vw, 26px);  /* scales with viewport */
           color: var(--accent);
-          margin-bottom: 1.25rem;
+          margin-bottom: 1rem;
           font-family: 'Syne', sans-serif;
           line-height: 1;
         }
@@ -174,24 +185,25 @@ const ForgotPassword = () => {
         .rp-heading {
           font-family: 'Syne', sans-serif;
           font-weight: 800;
-          font-size: 22px;
+          font-size: clamp(18px, 4.5vw, 22px);
           letter-spacing: -0.3px;
           color: var(--primary-text);
           margin-bottom: 0.25rem;
         }
 
         .rp-subheading {
-          font-size: 14px;
+          font-size: clamp(13px, 3.5vw, 14px);
           color: var(--secondary-text);
-          margin-bottom: 1.75rem;
+          margin-bottom: 1.5rem;
           line-height: 1.5;
         }
 
+        /* ─── Form fields ─── */
         .rp-field {
           display: flex;
           flex-direction: column;
           gap: 6px;
-          margin-bottom: 1.2rem;
+          margin-bottom: 1rem;
         }
 
         .rp-label {
@@ -210,19 +222,21 @@ const ForgotPassword = () => {
           padding: 0 0.95rem;
           border-radius: 12px;
           color: var(--primary-text);
-          font-size: 15px;
+          font-size: 16px;               /* 16px prevents iOS zoom-on-focus */
           font-family: 'DM Sans', sans-serif;
           transition: border-color 150ms ease, box-shadow 150ms ease;
+          -webkit-appearance: none;      /* removes iOS inner shadow */
         }
 
         .rp-input::placeholder { color: var(--muted-text); }
-        .rp-input:hover { border-color: var(--border-hover); }
-        .rp-input:focus {
+        .rp-input:hover  { border-color: var(--border-hover); }
+        .rp-input:focus  {
           outline: none;
           border-color: var(--accent);
           box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
+        /* ─── Error / status ─── */
         .rp-error {
           background: var(--error-bg);
           border: 1px solid var(--error-border);
@@ -230,7 +244,7 @@ const ForgotPassword = () => {
           padding: 10px 14px;
           color: var(--error);
           font-size: 13px;
-          margin-bottom: 1.2rem;
+          margin-bottom: 1rem;
         }
 
         .rp-error-title {
@@ -247,7 +261,7 @@ const ForgotPassword = () => {
         }
 
         .rp-status {
-          margin-bottom: 1.2rem;
+          margin-bottom: 1rem;
           padding: 10px 14px;
           border-radius: 12px;
           font-size: 13px;
@@ -266,7 +280,8 @@ const ForgotPassword = () => {
           color: var(--error);
         }
 
-        .rp-actions { width: 100%; margin-bottom: 1.5rem; }
+        /* ─── Button ─── */
+        .rp-actions { width: 100%; margin-bottom: 1.25rem; }
 
         .rp-button {
           display: flex;
@@ -284,6 +299,7 @@ const ForgotPassword = () => {
           font-size: 15px;
           font-family: 'DM Sans', sans-serif;
           transition: background 180ms ease-out, transform 120ms ease, box-shadow 180ms ease-out;
+          touch-action: manipulation;    /* removes 300ms tap delay on mobile */
         }
 
         .rp-button:hover:not([disabled]) {
@@ -291,18 +307,14 @@ const ForgotPassword = () => {
           box-shadow: 0 4px 20px rgba(200,240,100,0.18);
         }
 
-        .rp-button:active:not([disabled]) { transform: scale(0.99); }
+        .rp-button:active:not([disabled]) { transform: scale(0.98); }
 
         .rp-button:focus {
           outline: none;
           box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
-        .rp-button[disabled] {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
+        .rp-button[disabled] { opacity: 0.6; cursor: not-allowed; }
         .rp-button-text { line-height: 1; }
 
         .rp-spinner {
@@ -321,40 +333,111 @@ const ForgotPassword = () => {
 
         @keyframes rp-spin { to { transform: rotate(360deg); } }
 
+        /* ─── Token block ─── */
         .rp-token {
-          margin-top: 1.2rem;
+          margin-top: 1rem;
           background: rgba(255,255,255,0.03);
           padding: 1rem;
-          border-radius: 16px;
+          border-radius: 14px;
           border: 1px solid rgba(255,255,255,0.06);
         }
 
-        .rp-token-title { display: block; margin-bottom: 0.75rem; font-weight: 700; color: var(--primary-text); }
-
-        .rp-pre {
-          margin: 0.8rem 0;
-          background: #16161e;
+        .rp-token-title {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 700;
           color: var(--primary-text);
-          border-radius: 12px;
-          padding: 1rem;
-          overflow-x: auto;
-          font-size: 0.95rem;
+          font-size: 13px;
         }
 
-        .rp-footer-links { margin-top: 1.5rem; }
+        .rp-pre {
+          margin: 0.6rem 0;
+          background: #16161e;
+          color: var(--primary-text);
+          border-radius: 10px;
+          padding: 0.85rem;
+          overflow-x: auto;
+          font-size: clamp(11px, 3vw, 13px);  /* shrinks on narrow screens */
+          word-break: break-all;               /* long tokens wrap on mobile */
+          white-space: pre-wrap;
+        }
 
-        .rp-back { margin: 0; color: var(--secondary-text); font-size: 0.95rem; }
+        .rp-note {
+          font-size: 13px;
+          color: var(--secondary-text);
+          line-height: 1.5;
+        }
 
-        .rp-link { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+        /* ─── Footer ─── */
+        .rp-footer-links { margin-top: 1.25rem; }
 
-        .rp-left-inner { position: relative; top: 50%; transform: translateY(-50%); max-width: 420px; }
-        .rp-badges { margin: 24px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; color: var(--secondary-text); font-size: 14px; line-height: 1.6; }
-        .rp-left-glow { position: absolute; top: 12%; right: -8%; width: 280px; height: 280px; background: radial-gradient(circle at top right, rgba(200,240,100,0.08), transparent 40%); filter: blur(40px); pointer-events:none; }
+        .rp-back {
+          margin: 0;
+          color: var(--secondary-text);
+          font-size: 0.9rem;
+          text-align: center;
+        }
 
+        .rp-link {
+          color: var(--accent);
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
+
+        /* ─── Left panel (desktop only) ─── */
+        .rp-left-inner {
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+          max-width: 420px;
+        }
+
+        .rp-badges {
+          margin: 24px 0 0;
+          padding: 0;
+          list-style: none;
+          display: grid;
+          gap: 12px;
+          color: var(--secondary-text);
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .rp-left-glow {
+          position: absolute;
+          top: 12%;
+          right: -8%;
+          width: 280px;
+          height: 280px;
+          background: radial-gradient(circle at top right, rgba(200,240,100,0.08), transparent 40%);
+          filter: blur(40px);
+          pointer-events: none;
+        }
+
+        /* ─── Tablet ─── */
+        @media (min-width: 480px) {
+          .rp-right  { padding: 2rem 1.5rem; }
+          .rp-card   { padding: 2rem 1.75rem; border-radius: 20px; }
+        }
+
+        /* ─── Desktop ─── */
         @media (min-width: 900px) {
-          .rp-left { display: block; width: 40%; padding: 4rem; background: linear-gradient(160deg, var(--bg-canvas) 0%, var(--bg-left) 100%); position: relative; }
-          .rp-divider { display: block; width: 1px; background: rgba(255,255,255,0.06); }
-          .rp-right { padding: 4rem 3.5rem; }
+          .rp-left {
+            display: block;
+            width: 40%;
+            padding: 4rem;
+            background: linear-gradient(160deg, var(--bg-canvas) 0%, var(--bg-left) 100%);
+            position: relative;
+          }
+          .rp-divider {
+            display: block;
+            width: 1px;
+            background: rgba(255,255,255,0.06);
+          }
+          .rp-right {
+            padding: 4rem 3.5rem;
+            align-items: center;         /* re-center vertically on desktop */
+          }
         }
       `}</style>
     </>
