@@ -12,11 +12,21 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
-  const login = ({ user, accessToken, refreshToken }) => {
-    localStorage.setItem('authUser', JSON.stringify(user));
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    setUser(user);
+  // 🔑 UPGRADED: Receives the secure one-time code from your Express login endpoint
+  const login = ({ code }) => {
+    if (!code) {
+      console.error("Authentication Error: Secure exchange code missing.");
+      return;
+    }
+
+    // Grab your Django backend callback URL from environment variables
+    // In local development, this is typically: http://localhost:8000/auth/callback/
+    const djangoCallbackUrl = import.meta.env.VITE_DJANGO_APP_URL || 'http://localhost:8000/auth/callback/';
+    
+    // 🚀 THE SECURE HANDSHAKE:
+    // Instantly bounce the browser over to Django, carrying only the temporary short code.
+    // Django will catch this code and swap it with Node privately behind the scenes!
+    window.location.href = `${djangoCallbackUrl}?code=${code}`;
   };
 
   const logout = () => {

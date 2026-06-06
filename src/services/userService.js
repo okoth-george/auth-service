@@ -38,19 +38,16 @@ exports.createUser = async (userData) => {
 exports.loginUser = async (username, password) => {
   const user = await userRepo.findByUsername(username);
   if (!user) {
-    throw new Error('Invalid username');
+    throw new Error('Invalid username or password'); // 🔒 Security Tip: Generic error prevents user enumeration
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error('Invalid password');
+    throw new Error('Invalid username or password');
   }
 
-  const { accessToken, refreshToken } = generateTokens(user.id, user.username);
   return {
     user: { id: user.id, username: user.username },
-    accessToken,
-    refreshToken,
   };
 };
 

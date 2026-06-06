@@ -2,11 +2,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../schemas/authSchema';
 import api from '../api/axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
-  const navigate = useNavigate();
   const { login } = useAuth();
   const {
     register,
@@ -18,22 +17,20 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
+      // 1. POST credentials to your Node Auth API (/users/login maps to your controller)
       const response = await api.post('/users/login', data);
       
-      // Save tokens and user to localStorage (for future API calls)
-      login(response.data);
+      // 2. Extract the secure, short-lived authorization code from the response
+      const { code } = response.data;
       
-      // Get Django URL from env or default to localhost:8000
-      const DJANGO_URL = import.meta.env.VITE_DJANGO_URL || 'http://localhost:8000';
-      const accessToken = response.data.accessToken;
+      if (code) {
+        // 🚀 Pass the code to AuthContext, which instantly triggers the 
+        // server-to-server exchange callback redirect to Django!
+        login({ code });
+      } else {
+        alert('Authentication failed: Security server did not return a verification code.');
+      }
       
-      // Redirect to Django callback with token
-      // Django's ExpressJWTAuthentication backend will:
-      // 1. Read the token from URL query param
-      // 2. Authenticate the user from token
-      // 3. Store user in Django session
-      // 4. Remove token from URL (clean redirect)
-      window.location.href = `${DJANGO_URL}/auth/callback/?token=${encodeURIComponent(accessToken)}`;
     } catch (error) {
       alert(error.response?.data?.error || 'Login failed. Please check your credentials.');
     }

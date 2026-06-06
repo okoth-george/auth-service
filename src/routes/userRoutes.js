@@ -9,7 +9,8 @@ router.post('/register', validateRegistration(registerSchema), userController.re
 router.post('/login', validateLogin, userController.login);
 
 router.post('/refresh', userController.refresh);
-
+router.post('/exchange-code', userController.exchangeCode);
+//router.post('/logout', userController.logout);
 // Password reset endpoints
 router.post('/forgotPassword', userController.forgotPassword);
 router.post('/resetPassword', userController.resetPassword);
